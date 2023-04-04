@@ -10,4 +10,12 @@ data class Word(
     val example: String? = null,
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null
-)
+) {
+    override fun toString(): String {
+        return if (example.isNullOrBlank()) {
+            "$engWord - $rusWord"
+        } else {
+            "$engWord - $rusWord + $example"
+        }
+    }
+}

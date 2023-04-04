@@ -6,6 +6,6 @@ data class WordsListState(
     val isLoading: Boolean = false,
     val words: List<Word> = emptyList(),
     val error: String = "",
-//    val speakingWordIds: List<Int> = emptyList(),
-//    val expandedWordIds: List<Int> = emptyList()
+    val speakingWordIds: List<Int> = emptyList(),
+    val expandedWordIds: List<Int> = emptyList()
 )

@@ -3,6 +3,7 @@ plugins {
     id "org.jetbrains.kotlin.android"
     id "com.google.dagger.hilt.android"
     id "kotlin-kapt"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -66,6 +67,9 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 
+    // pager
+    implementation "com.google.accompanist:accompanist-pager:0.19.0"
+
     // Navigation
     implementation "androidx.navigation:navigation-compose:2.5.3"
 
@@ -98,6 +102,9 @@ dependencies {
     def room_version = "2.5.1"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-database:20.1.0'
 }
 
 kapt {

@@ -1,20 +1,25 @@
 package com.grig.mydictionaryjet.presentation.words_show.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -22,9 +27,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.grig.mydictionaryjet.presentation.words_show.WordsItemEvent
-import com.grig.mydictionaryjet.domain.model.Word
 import com.grig.mydictionaryjet.R
+import com.grig.mydictionaryjet.domain.model.Word
+import com.grig.mydictionaryjet.presentation.words_show.WordsItemEvent
 
 @Composable
 fun WordItem(
@@ -39,12 +44,17 @@ fun WordItem(
 //    val speaking = wordItemState.speaking
 //    val word = wordItemState.word
 
-    Card(
+    val rotationArrowAngle by animateFloatAsState(
+        targetValue = if (!expanded) 180f else 0f, animationSpec = tween(durationMillis = 500)
+    )
+
+    Box(
         modifier = Modifier
             .fillMaxWidth()
 //            .height(si.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable { onEvent(WordsItemEvent.ClickItem(ind)) },
+            .clickable { onEvent(WordsItemEvent.ClickItem(ind)) }
+            .background(color = MaterialTheme.colors.surface),
     ) {
         Column {
             Row(
@@ -92,9 +102,12 @@ fun WordItem(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Image(
-                    imageVector = Icons.Default.ArrowDropDown,
+                    imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = "arrowImg",
-                    modifier = Modifier.rotate(if (expanded) 0f else 180f)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface.copy(alpha = 0.7f)),
+                    modifier = Modifier
+                        .rotate(rotationArrowAngle)
+                        .size(30.dp)
                 )
             }
             AnimatedVisibility(visible = expanded) {

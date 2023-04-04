@@ -10,13 +10,10 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.grig.mydictionaryjet.presentation.theme.MyDictionaryJetTheme
 import com.grig.mydictionaryjet.presentation.words_show.WordsListViewModel
-import com.grig.mydictionaryjet.presentation.words_show.components.WordsList
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val wordsListViewModel by viewModels<WordsListViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    WordsList(wordsListViewModel)
+                    Navigation()
                 }
             }
         }
