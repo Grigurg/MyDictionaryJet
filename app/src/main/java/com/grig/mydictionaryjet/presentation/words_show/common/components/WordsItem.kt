@@ -1,4 +1,4 @@
-package com.grig.mydictionaryjet.presentation.words_show.components
+package com.grig.mydictionaryjet.presentation.words_show.common.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.grig.mydictionaryjet.R
 import com.grig.mydictionaryjet.domain.model.Word
-import com.grig.mydictionaryjet.presentation.words_show.WordsItemEvent
+import com.grig.mydictionaryjet.presentation.words_show.common.WordsItemEvent
 
 @Composable
 fun WordItem(

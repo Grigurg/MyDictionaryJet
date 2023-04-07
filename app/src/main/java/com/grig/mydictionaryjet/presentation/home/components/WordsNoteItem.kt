@@ -16,28 +16,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.grig.mydictionaryjet.di.AppModuleForFakes
 import com.grig.mydictionaryjet.domain.model.WordsNote
 
 @Composable
 fun WordsNoteItem(
     wordsNote: WordsNote,
     modifier: Modifier = Modifier,
-    onEditClick: (WordsNote) -> Unit = {}
+    onEditClick: (WordsNote) -> Unit = {},
+    onClickItem: (WordsNote) -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .clickable { }
+            .clickable { onClickItem(wordsNote) }
             .background(color = MaterialTheme.colors.surface.copy(alpha = 1f))
     ) {
         Column(
             modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)
         ) {
             Text(
-                text = wordsNote.title,
+                text = wordsNote.title ?: "",
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
@@ -45,7 +44,7 @@ fun WordsNoteItem(
             )
             Text(
                 text = buildString {
-                    for (word in wordsNote.content) {
+                    for (word in wordsNote.words) {
                         append(word.toString() + "\n")
                     }
                 },
@@ -75,8 +74,8 @@ fun WordsNoteItem(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewWordsNoteItem() {
-    WordsNoteItem(wordsNote = AppModuleForFakes.provideWordsNotes()[0])
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewWordsNoteItem() {
+//    WordsNoteItem(wordsNote = WordsNotesRepositoryFakeImpl.wordsNotes[0])
+//}

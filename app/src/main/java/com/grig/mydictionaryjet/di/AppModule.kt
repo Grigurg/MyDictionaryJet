@@ -1,12 +1,15 @@
 package com.grig.mydictionaryjet.di
 
+import android.app.Application
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.grig.mydictionaryjet.data.repository.notes.WordsNotesRepositoryFakeImpl
+import com.grig.mydictionaryjet.data.database.WordsNoteDatabase
+import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
+import com.grig.mydictionaryjet.data.repository.notes.WordsNotesRepositoryImpl
 import com.grig.mydictionaryjet.data.repository.words.WordsRepositoryImpl
-import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.repository.WordsNotesRepository
 import com.grig.mydictionaryjet.domain.repository.WordsRepository
+import com.grig.mydictionaryjet.domain.use_case.notes.*
 import com.grig.mydictionaryjet.domain.use_case.words.GetWordsUseCase
 import dagger.Module
 import dagger.Provides
@@ -37,9 +40,38 @@ object AppModule {
         return GetWordsUseCase(repository)
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideGetWordsNotesRepository(): WordsNotesRepository {
+//        return WordsNotesRepositoryFakeImpl()
+//    }
+
     @Provides
     @Singleton
-    fun provideGetWordsNotesRepository(wordsNotes: List<WordsNote>): WordsNotesRepository {
-        return WordsNotesRepositoryFakeImpl(wordsNotes)
+    fun provideWordsNotesUseCases(repository: WordsNotesRepository): WordsNotesUseCases {
+        return WordsNotesUseCases(
+            getWordsNotes = GetWordsNotes(repository),
+            getWordsNote = GetWordsNote(repository),
+            insertWordsNote = InsertWordsNote(repository),
+            deleteWordsNote = DeleteWordsNote(repository)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMediaHelper(context: Application): MediaHelper {
+        return MediaHelper(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordsNoteDatabase(context: Application): WordsNoteDatabase {
+        return WordsNoteDatabase.getDatabase(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordsNoteRepository(db: WordsNoteDatabase): WordsNotesRepository {
+        return WordsNotesRepositoryImpl(db.wordsNoteDao())
     }
 }

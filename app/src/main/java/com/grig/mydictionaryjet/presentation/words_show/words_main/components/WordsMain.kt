@@ -1,9 +1,9 @@
-package com.grig.mydictionaryjet.presentation.words_show.components
+package com.grig.mydictionaryjet.presentation.words_show.words_main.components
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,35 +14,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.grig.mydictionaryjet.presentation.words_show.WordsListViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.grig.mydictionaryjet.presentation.words_show.common.components.WordsList
+import com.grig.mydictionaryjet.presentation.words_show.words_main.WordsMainViewModel
 
 @Composable
-fun WordsList(
-    viewModel: WordsListViewModel
+fun WordsMain(
+    viewModel: WordsMainViewModel = hiltViewModel()
+//    viewModel: WordsMainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(modelClass = WordsMainViewModel::class.java)
 ) {
-    val state by viewModel.state.collectAsState()
+
 //    val expandedWordIds by viewModel.expandedWordIds.collectAsState()
 //    val speakingWordIds by viewModel.speakingWordIds.collectAsState()
-
-    val expandedWordIds = state.expandedWordIds
-    val speakingWordIds = state.speakingWordIds
+//    val viewModel: WordsMainViewModel by viewModel
+    val state by viewModel.state.collectAsState()
+    val wordsListState = state.wordsListState
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 7.dp)
-                .padding(horizontal = 6.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            itemsIndexed(state.words) { index, _ ->
-                Log.d("MyLog", index.toString())
-                WordItem(expanded = expandedWordIds.contains(index),
-                    speaking = speakingWordIds.contains(index),
-                    word = state.words[index],
-                    ind = index,
-                    onEvent = { event -> viewModel.onEvent(event) })
-            }
-        }
+        WordsList(state = wordsListState, mediaHelper = viewModel.mediaHelper)
+
         if (state.error.isNotBlank()) {
             Text(
                 text = state.error,

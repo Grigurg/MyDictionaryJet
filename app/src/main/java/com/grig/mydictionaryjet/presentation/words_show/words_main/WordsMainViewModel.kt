@@ -1,9 +1,12 @@
-package com.grig.mydictionaryjet.presentation.words_show
+package com.grig.mydictionaryjet.presentation.words_show.words_main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.common.Resource
+import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
 import com.grig.mydictionaryjet.domain.use_case.words.GetWordsUseCase
+import com.grig.mydictionaryjet.presentation.words_show.common.WordsItemEvent
+import com.grig.mydictionaryjet.presentation.words_show.common.WordsListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,8 +14,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WordsListViewModel @Inject constructor(
-    private val getWordsUseCase: GetWordsUseCase
+class WordsMainViewModel @Inject constructor(
+    private val getWordsUseCase: GetWordsUseCase,
+    val mediaHelper: MediaHelper
 ) : ViewModel() {
 
 //    private val _state: MutableStateFlow<WordsListState> = MutableStateFlow(WordsListState())
@@ -21,8 +25,8 @@ class WordsListViewModel @Inject constructor(
 //    private val _words = MutableStateFlow(listOf<Word>())
 //    val words: StateFlow<List<Word>> get() = _words
 
-    private val _state = MutableStateFlow(WordsListState())
-    val state: StateFlow<WordsListState> get() = _state
+    private val _state = MutableStateFlow(WordsMainState())
+    val state: StateFlow<WordsMainState> get() = _state
 
 //    private val _speakingWordIds = MutableStateFlow(listOf<Int>())
 //    val speakingWordIds: StateFlow<List<Int>> get() = _speakingWordIds
@@ -79,17 +83,24 @@ class WordsListViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         _state.emit(
-                            WordsListState(
-                                words = result.data
-                                    ?: emptyList()
+                            WordsMainState(
+                                wordsListState =
+                                WordsListState(
+                                    words = result.data
+                                        ?: emptyList()
+                                )
                             )
                         )
                     }
                     is Resource.Error -> {
-                        _state.emit(WordsListState(error = result.message ?: "An unexpected error"))
+                        _state.emit(
+                            WordsMainState(
+                                error = result.message ?: "An unexpected error"
+                            )
+                        )
                     }
                     is Resource.Loading -> {
-                        _state.emit(WordsListState(isLoading = true))
+                        _state.emit(WordsMainState(isLoading = true))
                     }
                 }
             }
@@ -101,18 +112,31 @@ class WordsListViewModel @Inject constructor(
         when (event) {
             is WordsItemEvent.ClickTalker -> {
                 viewModelScope.launch {
-                    _state.emit(_state.value.copy(speakingWordIds = _state.value.speakingWordIds))
+                    _state.emit(
+                        _state.value.copy(
+                            wordsListState = _state.value.wordsListState.copy(
+                                speakingWordIds = _state.value.wordsListState.speakingWordIds.toMutableList()
+                                    .also { list ->
+                                        if (list.contains(event.id)) list.remove(event.id)
+                                        else list.add(event.id)
+                                    }
+                            )
+                        )
+                    )
                 }
             }
             is WordsItemEvent.ClickItem -> {
                 viewModelScope.launch {
                     _state.emit(
                         _state.value.copy(
-                            expandedWordIds = _state.value.expandedWordIds.toMutableList()
-                                .also { list ->
-                                    if (list.contains(event.id)) list.remove(event.id)
-                                    else list.add(event.id)
-                                })
+                            wordsListState = _state.value.wordsListState.copy(
+                                speakingWordIds = _state.value.wordsListState.expandedWordIds.toMutableList()
+                                    .also { list ->
+                                        if (list.contains(event.id)) list.remove(event.id)
+                                        else list.add(event.id)
+                                    }
+                            )
+                        )
                     )
                 }
             }

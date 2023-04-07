@@ -1,6 +1,5 @@
 package com.grig.mydictionaryjet.presentation.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,7 +12,9 @@ import com.grig.mydictionaryjet.domain.model.WordsNote
 @Composable
 fun WordsNotesList(
     wordsNotes: List<WordsNote>,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    onClickItem: (WordsNote) -> Unit = {},
+    onEditClick: (WordsNote) -> Unit = {}
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -22,9 +23,13 @@ fun WordsNotesList(
         modifier = modifier
     ) {
         items(wordsNotes) { wordsNote ->
-            WordsNoteItem(wordsNote = wordsNote, modifier = Modifier.clickable {
-                // TODO(navController, navigate to WordsListScreen)
-            })
+            WordsNoteItem(
+                wordsNote = wordsNote,
+                onClickItem = { note ->
+                    onClickItem(note)
+                },
+                onEditClick = { onEditClick(wordsNote) }
+            )
         }
     }
 }
