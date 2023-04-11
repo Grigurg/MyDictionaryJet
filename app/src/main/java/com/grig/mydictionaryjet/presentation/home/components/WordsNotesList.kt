@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.grig.mydictionaryjet.domain.model.WordsNote
+import com.grig.mydictionaryjet.presentation.home.WordsNoteItemEvent
 
 @Composable
 fun WordsNotesList(
     wordsNotes: List<WordsNote>,
     modifier: Modifier = Modifier,
-    onClickItem: (WordsNote) -> Unit = {},
-    onEditClick: (WordsNote) -> Unit = {}
+    onItemEvent: (WordsNoteItemEvent) -> Unit = {}
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -25,10 +25,7 @@ fun WordsNotesList(
         items(wordsNotes) { wordsNote ->
             WordsNoteItem(
                 wordsNote = wordsNote,
-                onClickItem = { note ->
-                    onClickItem(note)
-                },
-                onEditClick = { onEditClick(wordsNote) }
+                onEvent = {event -> onItemEvent(event)}
             )
         }
     }

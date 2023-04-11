@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     val wordsNotes = _wordsNotes.asStateFlow()
 
     init {
-        for (wordsNote in  listOf(
+        for (wordsNote in listOf(
             WordsNote(
                 "Words from TT", listOf(
                     Word("take up", "занимать"),
@@ -61,6 +61,18 @@ class HomeViewModel @Inject constructor(
                 _wordsNotes.emit(wordsNotes)
 //                Log.d("MyLog", "tittle ${wordsNotes[1].title}")
             }
+        }
+    }
+
+    fun deleteWordsNote(wordsNote: WordsNote) {
+        viewModelScope.launch {
+            useCases.deleteWordsNote(wordsNote)
+        }
+    }
+
+    fun addWordsNote(wordsNote: WordsNote) {
+        viewModelScope.launch {
+            useCases.insertWordsNote(wordsNote)
         }
     }
 }

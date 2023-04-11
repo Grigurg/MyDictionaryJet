@@ -1,9 +1,7 @@
 package com.grig.mydictionaryjet.domain.model
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Relation
+import android.util.Log
+import androidx.room.*
 
 //@Entity(tableName = "words_note")
 //data class WordsNote(
@@ -13,18 +11,45 @@ import androidx.room.Relation
 //    val words: List<Word>
 //    )
 
-@Entity(tableName = "words_note")
-data class WordsNote(
-    @PrimaryKey
-    val title: String,
-    @Embedded(prefix = "words_")
-    @Relation(
-        parentColumn = "title",
-        entityColumn = "words_note_title"
-    )
-    val words: List<Word>
-)
+//@Entity(tableName = "words_note")
+//data class WordsNote(
+//    @PrimaryKey
+//    val title: String,
+//    val words: String
+//)
 
+//@Entity(tableName = "words_note")
+//data class WordsNote(
+//    var title: String = "",
+//    @Embedded val content: List<Word> = emptyList(),
+//    @PrimaryKey(autoGenerate = true) val id: Int = 0
+//)
+
+
+@Entity(tableName = "words_note", indices = [Index(value = ["title"], unique = true)])
+data class WordsNote(
+    @PrimaryKey var title: String = "",
+    val words: List<Word> = emptyList()
+){
+    companion object {
+        fun wordsToString(words: List<Word>): String {
+            return buildString {
+                append(words.first())
+                words.drop(1).forEach {
+                    append("\n$it")
+                }
+            }
+        }
+
+        fun wordsFromString(string: String): List<Word> {
+            return buildList {
+                for (line in string.split("\n")) {
+                    add(Word.fromString(line) ?: Word("", ""))
+                }
+            }
+        }
+    }
+}
 //{
 //    fun wordsToString(): String {
 //        return buildString {

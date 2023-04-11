@@ -21,7 +21,7 @@ import com.grig.mydictionaryjet.domain.model.WordsNote
 //}
 
 @Database(entities = [WordsNote::class], version = 1, exportSchema = false)
-//@TypeConverters(WordsTypeConverters::class)
+@TypeConverters(WordsTypeConverters::class)
 abstract class WordsNoteDatabase : RoomDatabase() {
     abstract fun wordsNoteDao(): WordsNoteDao
 

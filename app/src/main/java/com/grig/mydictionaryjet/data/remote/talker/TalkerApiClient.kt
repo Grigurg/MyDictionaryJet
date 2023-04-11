@@ -78,7 +78,7 @@ class TalkerApiClient {
     fun getInputStream(word: String): ResponseBody? {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
         val url = getUrlMp3(word)
-        Log.d("MyLog", url)
+//        Log.d("MyLog", url)
         val request = Request.Builder().url(getUrlMp3(word)).build()
         val response = OkHttpClient().newCall(request).execute()
 

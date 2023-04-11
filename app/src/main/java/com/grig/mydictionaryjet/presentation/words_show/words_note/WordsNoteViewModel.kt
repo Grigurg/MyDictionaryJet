@@ -1,5 +1,6 @@
 package com.grig.mydictionaryjet.presentation.words_show.words_note
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,7 +34,7 @@ class WordsNoteViewModel @Inject constructor(
             val wordsNote = useCases.getWordsNote(title)
             _state.emit(
                 WordsNoteState(
-                    title = wordsNote.title ?: "",
+                    title = wordsNote.title,
                     wordsListState = WordsListState(words = wordsNote.words)
 //                useCases.getWordsNote(title)
                 )

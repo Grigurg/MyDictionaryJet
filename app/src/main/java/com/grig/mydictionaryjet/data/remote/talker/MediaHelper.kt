@@ -179,7 +179,7 @@ class MediaHelper @Inject constructor(
                     }
                     outputStream.write(fileReader, 0, read)
                     fileSizeDownloaded += read.toLong()
-                    Log.d("File Download: ", "$fileSizeDownloaded of $fileSize")
+//                    Log.d("File Download: ", "$fileSizeDownloaded of $fileSize")
                 }
                 outputStream.flush()
                 true
@@ -208,7 +208,7 @@ class MediaHelper @Inject constructor(
         if (!isAudioExist()) {
             return writeResponseBodyToDisk(getAudioFromApi())
         } else {
-            Log.d("MyLog", "File exists")
+//            Log.d("MyLog", "File exists")
             return true
         }
 //        return if (!isAudioExist()) {

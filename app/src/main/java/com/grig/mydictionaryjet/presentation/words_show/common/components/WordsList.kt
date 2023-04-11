@@ -47,7 +47,6 @@ fun WordsList(
                 .padding(horizontal = 6.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(state.words) { index, word ->
-                Log.d("MyLog", index.toString())
                 WordItem(expanded = expandedWordIds.contains(index),
                     speaking = speakingWordIds.contains(index),
                     word = word,
@@ -65,7 +64,6 @@ fun WordsList(
                                             } else {
                                                 list.add(event.id)
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    Log.d("MyLog", "trying saying word")
                                                     scope.launch {
                                                         mediaHelper?.sayWord(onCompletion = {
                                                             speakingWordIds =

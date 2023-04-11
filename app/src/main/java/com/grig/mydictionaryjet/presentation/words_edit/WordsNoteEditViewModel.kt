@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.use_case.notes.WordsNotesUseCases
+import com.grig.mydictionaryjet.presentation.words_edit.components.WordsNoteEditEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,6 @@ class WordsNoteEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     useCases: WordsNotesUseCases
 ): ViewModel() {
-
     private val _wordsNote = MutableStateFlow(WordsNote())
     val wordsNote = _wordsNote.asStateFlow()
 
@@ -25,6 +25,21 @@ class WordsNoteEditViewModel @Inject constructor(
         viewModelScope.launch {
             val note = useCases.getWordsNote(title ?: "")
             _wordsNote.emit(note)
+        }
+    }
+
+    fun onEvent(event: WordsNoteEditEvent) {
+        when (event) {
+            is WordsNoteEditEvent.TitleChanged -> {
+                viewModelScope.launch {
+                    _wordsNote.emit(wordsNote.value.copy(title = event.title))
+                }
+            }
+            is WordsNoteEditEvent.ContentChanged -> {
+                viewModelScope.launch {
+                    _wordsNote.emit(wordsNote.value.copy(wo))
+                }
+            }
         }
     }
 }
