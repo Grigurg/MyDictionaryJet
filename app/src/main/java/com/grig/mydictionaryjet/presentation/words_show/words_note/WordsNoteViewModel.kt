@@ -1,11 +1,11 @@
 package com.grig.mydictionaryjet.presentation.words_show.words_note
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
-import com.grig.mydictionaryjet.domain.use_case.notes.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.model.WordsNote
+import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
 import com.grig.mydictionaryjet.presentation.words_show.common.WordsListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +35,7 @@ class WordsNoteViewModel @Inject constructor(
             _state.emit(
                 WordsNoteState(
                     title = wordsNote.title,
-                    wordsListState = WordsListState(words = wordsNote.words)
+                    wordsListState = WordsListState(words = WordsNote.wordsFromString(wordsNote.content))
 //                useCases.getWordsNote(title)
                 )
             )

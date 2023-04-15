@@ -19,4 +19,3 @@ fun WordDto.toWord(): Word {
     )
 }
 
-class NullFiledException(msg: String) : Exception(msg)

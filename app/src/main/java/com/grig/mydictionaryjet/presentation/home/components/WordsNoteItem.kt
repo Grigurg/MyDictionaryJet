@@ -52,7 +52,7 @@ fun WordsNoteItem(
             )
             Text(
                 text = buildString {
-                    for (word in wordsNote.words) {
+                    for (word in wordsNote.content) {
                         append(word.toString() + "\n")
                     }
                 },

@@ -1,4 +1,4 @@
-package com.grig.mydictionaryjet.domain.use_case.notes
+package com.grig.mydictionaryjet.domain.use_case.database
 
 data class WordsNotesUseCases(
     val getWordsNotes: GetWordsNotes,

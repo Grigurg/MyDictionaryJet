@@ -1,10 +1,7 @@
 package com.grig.mydictionaryjet.data.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import com.grig.mydictionaryjet.domain.model.WordsNote
 
 //@Database(
@@ -20,8 +17,18 @@ import com.grig.mydictionaryjet.domain.model.WordsNote
 //    }
 //}
 
-@Database(entities = [WordsNote::class], version = 1, exportSchema = false)
-@TypeConverters(WordsTypeConverters::class)
+@Database(
+    entities = [WordsNote::class],
+    version = 1,
+//    exportSchema = true,
+//    autoMigrations = [
+//        AutoMigration(
+//            from = 1,
+//            to = 2
+//        )
+//    ]
+)
+//@TypeConverters(WordsTypeConverters::class)
 abstract class WordsNoteDatabase : RoomDatabase() {
     abstract fun wordsNoteDao(): WordsNoteDao
 

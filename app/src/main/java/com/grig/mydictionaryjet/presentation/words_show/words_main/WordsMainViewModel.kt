@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.common.Resource
 import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
-import com.grig.mydictionaryjet.domain.use_case.words.GetWordsUseCase
-import com.grig.mydictionaryjet.presentation.words_show.common.WordsItemEvent
+import com.grig.mydictionaryjet.domain.model.WordsNote
+import com.grig.mydictionaryjet.domain.use_case.remote.GetWordsNotesRemoteUseCase
 import com.grig.mydictionaryjet.presentation.words_show.common.WordsListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WordsMainViewModel @Inject constructor(
-    private val getWordsUseCase: GetWordsUseCase,
+    private val getWordsUseCase: GetWordsNotesRemoteUseCase,
     val mediaHelper: MediaHelper
 ) : ViewModel() {
 
@@ -80,14 +80,14 @@ class WordsMainViewModel @Inject constructor(
 //        }
         viewModelScope.launch {
             getWordsUseCase().collect { result ->
+//                Log.d("MyLog", ("get" + result.data?.getOrNull(0)?.title) ?: "Null title")
                 when (result) {
                     is Resource.Success -> {
                         _state.emit(
                             WordsMainState(
                                 wordsListState =
                                 WordsListState(
-                                    words = result.data
-                                        ?: emptyList()
+                                    words = WordsNote.wordsFromString(result.data?.get(0)?.content ?: "")
                                 )
                             )
                         )
@@ -108,40 +108,40 @@ class WordsMainViewModel @Inject constructor(
 //        }.launchIn(viewModelScope)
     }
 
-    fun onEvent(event: WordsItemEvent) {
-        when (event) {
-            is WordsItemEvent.ClickTalker -> {
-                viewModelScope.launch {
-                    _state.emit(
-                        _state.value.copy(
-                            wordsListState = _state.value.wordsListState.copy(
-                                speakingWordIds = _state.value.wordsListState.speakingWordIds.toMutableList()
-                                    .also { list ->
-                                        if (list.contains(event.id)) list.remove(event.id)
-                                        else list.add(event.id)
-                                    }
-                            )
-                        )
-                    )
-                }
-            }
-            is WordsItemEvent.ClickItem -> {
-                viewModelScope.launch {
-                    _state.emit(
-                        _state.value.copy(
-                            wordsListState = _state.value.wordsListState.copy(
-                                speakingWordIds = _state.value.wordsListState.expandedWordIds.toMutableList()
-                                    .also { list ->
-                                        if (list.contains(event.id)) list.remove(event.id)
-                                        else list.add(event.id)
-                                    }
-                            )
-                        )
-                    )
-                }
-            }
-        }
-    }
+//    fun onEvent(event: WordsItemEvent) {
+//        when (event) {
+//            is WordsItemEvent.ClickTalker -> {
+//                viewModelScope.launch {
+//                    _state.emit(
+//                        _state.value.copy(
+//                            wordsListState = _state.value.wordsListState.copy(
+//                                speakingWordIds = _state.value.wordsListState.speakingWordIds.toMutableList()
+//                                    .also { list ->
+//                                        if (list.contains(event.id)) list.remove(event.id)
+//                                        else list.add(event.id)
+//                                    }
+//                            )
+//                        )
+//                    )
+//                }
+//            }
+//            is WordsItemEvent.ClickItem -> {
+//                viewModelScope.launch {
+//                    _state.emit(
+//                        _state.value.copy(
+//                            wordsListState = _state.value.wordsListState.copy(
+//                                speakingWordIds = _state.value.wordsListState.expandedWordIds.toMutableList()
+//                                    .also { list ->
+//                                        if (list.contains(event.id)) list.remove(event.id)
+//                                        else list.add(event.id)
+//                                    }
+//                            )
+//                        )
+//                    )
+//                }
+//            }
+//        }
+//    }
 
 //    fun onEvent(event: WordsItemEvent) {
 //        when (event) {

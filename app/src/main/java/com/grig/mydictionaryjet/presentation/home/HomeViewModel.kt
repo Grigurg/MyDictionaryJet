@@ -3,7 +3,7 @@ package com.grig.mydictionaryjet.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.domain.model.WordsNote
-import com.grig.mydictionaryjet.domain.use_case.notes.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

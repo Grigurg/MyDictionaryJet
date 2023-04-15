@@ -1,4 +1,4 @@
-package com.grig.mydictionaryjet.data.remote.database
-
+//package com.grig.mydictionaryjet.data.remote.database
+//
 //class WordsRemoteDatabaseApi {
 //}

@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.grig.mydictionaryjet"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -117,6 +117,16 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-database:20.2.0'
+
+    // Data store
+//    implementation "androidx.datastore:datastore:1.0.0"
+//    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
+
+//    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+//    implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
+
+//    implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
 }
 
 kapt {
