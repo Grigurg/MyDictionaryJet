@@ -1,10 +1,17 @@
 package com.grig.mydictionaryjet.presentation.words_edit.components
 
-import android.util.Log
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.TextField
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.grig.mydictionaryjet.presentation.words_edit.WordsNoteEditViewModel
@@ -13,11 +20,52 @@ import com.grig.mydictionaryjet.presentation.words_edit.WordsNoteEditViewModel
 fun WordsNoteEdit(
     viewModel: WordsNoteEditViewModel = hiltViewModel()
 ) {
-    val wordsNote by viewModel.wordsNote.collectAsState()
-    TextField(value = wordsNote.title, onValueChange = {
-        viewModel.onEvent(WordsNoteEditEvent.TitleChanged(it))
+//    val wordsNote by viewModel.wordsNote.collectAsState()
+    val title by viewModel.title.collectAsState()
+    val content by viewModel.content.collectAsState()
+
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+//            .verticalScroll(
+//                rememberScrollState()
+//            )
+        ,
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(WordsNoteEditEvent.Save)
+            }, backgroundColor = MaterialTheme.colors.surface) {
+                Icon(imageVector = Icons.Default.Save, contentDescription = "Save note")
+            }
+        }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(padding)
+//            .background(test)
+        ) {
+//        BasicTextField(value = title, onValueChange = {
+//            viewModel.onEvent(WordsNoteEditEvent.TitleChanged(it))
+//        })
+            item {
+                TransparentTextFiled(
+                    value = title,
+                    hint = "Title",
+                    textStyle = MaterialTheme.typography.h6,
+                    onValueChange = {
+                        viewModel.onEvent(WordsNoteEditEvent.TitleChanged(it))
+                    })
+            }
+            item {
+                TransparentTextFiled(
+                    value = content,
+                    hint = "Content",
+                    textStyle = MaterialTheme.typography.body1,
+                    onValueChange = {
+                        viewModel.onEvent(WordsNoteEditEvent.ContentChanged(it))
+                    })
+            }
+        }
     }
-    )
 //    val wordsNote by viewModel.wordsNote.collectAsState()
 //    var title by remember {
 //    mutableStateOf(wordsNote.title)

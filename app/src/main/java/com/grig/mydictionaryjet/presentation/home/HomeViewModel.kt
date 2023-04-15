@@ -2,7 +2,6 @@ package com.grig.mydictionaryjet.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.grig.mydictionaryjet.domain.model.Word
 import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.use_case.notes.WordsNotesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,42 +19,6 @@ class HomeViewModel @Inject constructor(
     val wordsNotes = _wordsNotes.asStateFlow()
 
     init {
-        for (wordsNote in listOf(
-            WordsNote(
-                "Words from TT", listOf(
-                    Word("take up", "занимать"),
-                    Word("poison", "яд"),
-                    Word("trait", "черта")
-                )
-            ),
-            WordsNote(
-                "Words from books",
-                listOf(
-                    Word("insult", "оскорблять"),
-                    Word("avenge", "мстить"),
-                    Word("punish", "наказывать"),
-                    Word("military", "военный"),
-                    Word("capture", "захват")
-                )
-            ),
-            WordsNote(
-                "Words from songs",
-                listOf(
-                    Word("give in", "поддаваться"),
-                    Word("sip", "глоток"),
-                    Word("thrifty", "бережлиывй")
-                )
-            )
-        )) {
-//            for (i in 0..3) {
-//                viewModelScope.launch {
-//                    useCases.deleteWordsNote(wordsNote)
-//                }
-//            }
-            viewModelScope.launch {
-                useCases.insertWordsNote(wordsNote)
-            }
-        }
         viewModelScope.launch {
             useCases.getWordsNotes().collect { wordsNotes ->
                 _wordsNotes.emit(wordsNotes)
@@ -63,16 +26,15 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
     fun deleteWordsNote(wordsNote: WordsNote) {
         viewModelScope.launch {
             useCases.deleteWordsNote(wordsNote)
         }
     }
 
-    fun addWordsNote(wordsNote: WordsNote) {
-        viewModelScope.launch {
-            useCases.insertWordsNote(wordsNote)
-        }
-    }
+//    fun addWordsNote(wordsNote: WordsNote) {
+//        viewModelScope.launch {
+//            useCases.insertWordsNote(wordsNote)
+//        }
+//    }
 }

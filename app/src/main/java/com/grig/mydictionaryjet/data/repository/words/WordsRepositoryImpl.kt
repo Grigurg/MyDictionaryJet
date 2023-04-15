@@ -22,6 +22,7 @@ class WordsRepositoryImpl @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val words = mutableListOf<WordDto>()
 
+
                 for (word in snapshot.children) {
                     words.add(word.getValue(WordDto::class.java)!!)
                 }

@@ -3,6 +3,7 @@ package com.grig.mydictionaryjet.presentation.words_edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grig.mydictionaryjet.data.database.WordsTypeConverters
 import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.use_case.notes.WordsNotesUseCases
 import com.grig.mydictionaryjet.presentation.words_edit.components.WordsNoteEditEvent
@@ -15,16 +16,27 @@ import javax.inject.Inject
 @HiltViewModel
 class WordsNoteEditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    useCases: WordsNotesUseCases
+    private val useCases: WordsNotesUseCases,
+    private val typeConverters: WordsTypeConverters
 ): ViewModel() {
-    private val _wordsNote = MutableStateFlow(WordsNote())
-    val wordsNote = _wordsNote.asStateFlow()
+//    private val _wordsNote = MutableStateFlow(WordsNote())
+//    val wordsNote = _wordsNote.asStateFlow()
+
+    private val _title = MutableStateFlow(String())
+    val title = _title.asStateFlow()
+
+    private val _content = MutableStateFlow(String())
+    val content = _content.asStateFlow()
 
     init {
         val title = savedStateHandle.get<String>("title")
         viewModelScope.launch {
-            val note = useCases.getWordsNote(title ?: "")
-            _wordsNote.emit(note)
+            if (title != null) {
+                val note = useCases.getWordsNote(title)
+                val content = typeConverters.fromWordsList(note.words)
+                _title.emit(note.title)
+                _content.emit(content)
+            }
         }
     }
 
@@ -32,14 +44,49 @@ class WordsNoteEditViewModel @Inject constructor(
         when (event) {
             is WordsNoteEditEvent.TitleChanged -> {
                 viewModelScope.launch {
-                    _wordsNote.emit(wordsNote.value.copy(title = event.title))
+                    _title.emit(event.title)
                 }
             }
             is WordsNoteEditEvent.ContentChanged -> {
                 viewModelScope.launch {
-                    _wordsNote.emit(wordsNote.value.copy(wo))
+                    _content.emit(event.content)
+                }
+            }
+            is WordsNoteEditEvent.Save -> {
+                viewModelScope.launch {
+                    useCases.insertWordsNote(
+                        WordsNote(
+                            _title.value,
+                            typeConverters.toWordsList(_content.value)
+                        )
+                    )
+
                 }
             }
         }
     }
+
+
+//    init {
+//        val title = savedStateHandle.get<String>("title")
+//        viewModelScope.launch {
+//            val note = useCases.getWordsNote(title ?: "")
+//            _wordsNote.emit(note)
+//        }
+//    }л
+//
+//    fun onEvent(event: WordsNoteEditEvent) {
+//        when (event) {
+//            is WordsNoteEditEvent.TitleChanged -> {
+//                viewModelScope.launch {
+//                    _wordsNote.emit(wordsNote.value.copy(title = event.title))
+//                }
+//            }
+//            is WordsNoteEditEvent.ContentChanged -> {
+//                viewModelScope.launch {
+//                    _wordsNote.emit(wordsNote.value.copy(wo))
+//                }
+//            }
+//        }
+//    }
 }
