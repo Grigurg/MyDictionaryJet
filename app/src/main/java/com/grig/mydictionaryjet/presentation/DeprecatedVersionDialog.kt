@@ -57,3 +57,41 @@ fun DeprecatedVersionDialog() {
         }
     }, buttons = {})
 }
+
+//fun showInstallOption(
+//    destination: String,
+////        uri: Uri,
+//    context: Context
+//): Intent {
+//    // set BroadcastReceiver to install app when .apk is downloaded
+//
+//
+////                    val contentUri = FileProvider.getUriForFile(
+////                        context,
+//////                        BuildConfig.APPLICATION_ID + "",
+////                        File(destination)
+////                    )
+//
+//    val install = Intent(Intent.ACTION_VIEW)
+//    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//    install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//    install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+//    install.data = destination.toUri()
+//    return install
+////                    context.startActivity(install)
+////                    context.unregisterReceiver(context)
+//    // finish()
+//
+////                    val install = Intent(Intent.ACTION_VIEW)
+////                    install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+////                    install.setDataAndType(
+////                        uri,
+////                        APP_INSTALL_PATH
+////                    )
+////                    context.startActivity(install)
+////                    context.unregisterReceiver(this)
+////                    // finish()
+//
+//
+////        context.startActivity(IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+//}

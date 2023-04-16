@@ -8,10 +8,14 @@ import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
 import com.grig.mydictionaryjet.data.repository.VersionControl
 import com.grig.mydictionaryjet.data.repository.notes.WordsNotesRepositoryImpl
 import com.grig.mydictionaryjet.data.repository.words.WordsNoteRemoteRepositoryImpl
+import com.grig.mydictionaryjet.data.repository.words.WordsNotesRemoteRepositoryImpl
 import com.grig.mydictionaryjet.domain.repository.WordsNoteRemoteRepository
+import com.grig.mydictionaryjet.domain.repository.WordsNotesRemoteRepository
 import com.grig.mydictionaryjet.domain.repository.WordsNotesRepository
+import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
 import com.grig.mydictionaryjet.domain.use_case.database.*
-import com.grig.mydictionaryjet.domain.use_case.remote.GetWordsNotesRemoteUseCase
+import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNote
+import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNotes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,23 +39,23 @@ object AppModule {
 
     }
 
-    @Provides
-    @Singleton
-    fun provideWordsNoteRemoteRepository(db: FirebaseDatabase): WordsNoteRemoteRepository {
-        return WordsNoteRemoteRepositoryImpl(db)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetWordsUseCase(repository: WordsNoteRemoteRepository): GetWordsNotesRemoteUseCase {
-        return GetWordsNotesRemoteUseCase(repository)
-    }
-
 //    @Provides
 //    @Singleton
-//    fun provideGetWordsNotesRepository(): WordsNotesRepository {
-//        return WordsNotesRepositoryFakeImpl()
+//    fun provideWordsNoteRemoteRepository(db: FirebaseDatabase): WordsNoteRemoteRepository {
+//        return WordsNoteRemoteRepositoryImpl(db)
 //    }
+
+    @Provides
+    @Singleton
+    fun provideGetRemoteWordsNotesRepository(db: FirebaseDatabase): WordsNotesRemoteRepository {
+        return WordsNotesRemoteRepositoryImpl(db)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetWordsUseCase(repository: WordsNotesRemoteRepository): GetRemoteWordsNotes {
+        return GetRemoteWordsNotes(repository)
+    }
 
     @Provides
     @Singleton
@@ -86,5 +90,17 @@ object AppModule {
     @Singleton
     fun provideVersionControl(db: FirebaseDatabase): VersionControl {
         return VersionControl(db)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordsNoteRemoteRepository(db: FirebaseDatabase): WordsNoteRemoteRepository {
+        return WordsNoteRemoteRepositoryImpl(db)
+    }
+
+    @Provides
+    @Singleton
+    fun provide(repository: WordsNoteRemoteRepository): GetRemoteWordsNote {
+        return GetRemoteWordsNote(repository)
     }
 }

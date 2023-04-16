@@ -1,6 +1,8 @@
 package com.grig.mydictionaryjet.domain.model
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 //@Entity(tableName = "words_note")
 //data class WordsNote(
@@ -29,9 +31,12 @@ import androidx.room.*
 data class WordsNote(
     @PrimaryKey var title: String = "",
     val content: String = ""
-){
+) {
     companion object {
         fun wordsToString(words: List<Word>): String {
+            if (words.isEmpty()) {
+                return ""
+            }
             return buildString {
                 append(words.first())
                 words.drop(1).forEach {

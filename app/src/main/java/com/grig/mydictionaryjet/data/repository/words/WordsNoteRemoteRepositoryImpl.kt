@@ -17,22 +17,32 @@ import javax.inject.Inject
 class WordsNoteRemoteRepositoryImpl @Inject constructor(
     private val db: FirebaseDatabase
 ) : WordsNoteRemoteRepository {
-    override suspend fun getWordsNotes(): Flow<List<WordsNoteDto>> = channelFlow {
-        val ref = db.reference
+    override suspend fun getWordsNote(title: String): Flow<WordsNoteDto> = channelFlow {
+        Log.d("MyLog", "get")
+        val ref = db.getReference("words").child(title)
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val wordsNotes = mutableListOf<WordsNoteDto>()
+                Log.d("MyLog", "receive data in Repository")
 
-                for (wordsNote in snapshot.children) {
-                    val words = mutableListOf<WordDto>()
-                    for (word in wordsNote.children) {
-                        words.add(word.getValue(WordDto::class.java)!!)
-                    }
-                    wordsNotes.add(WordsNoteDto(title = wordsNote.key.toString(), words = words))
-//                    Log.d("MyLog", wordsNote.key .toString())
+                val words = mutableListOf<WordDto>()
+
+                for (word in snapshot.children) {
+                    Log.d("MyLog", "words is ")
+                    words.add(word.getValue(WordDto::class.java) ?: WordDto("error"))
                 }
+//                val wordsNote = snapshot.getValue(WordsNoteDto::class.java) ?: WordsNoteDto("error")
+//                val wordsNotes = mutableListOf<WordsNoteDto>()
+//
+//                for (wordsNote in snapshot.children) {
+//                    val words = mutableListOf<WordDto>()
+//                    for (word in wordsNote.children) {
+//                        words.add(word.getValue(WordDto::class.java)!!)
+//                    }
+//                    wordsNotes.add(WordsNoteDto(title = wordsNote.key.toString(), words = words))
+////                    Log.d("MyLog", wordsNote.key .toString())
+//                }
                 launch {
-                    send(wordsNotes)
+                    send(WordsNoteDto(title, words))
                 }
 //                for (word in snapshot.children) {
 //                    words.add(word.getValue(WordDto::class.java)!!)

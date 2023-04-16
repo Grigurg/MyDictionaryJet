@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject lateinit var versionControl: VersionControl
+    @Inject
+    lateinit var versionControl: VersionControl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
                     if (isDialogOpen) {
                         DeprecatedVersionDialog()
                     }
+//                    startActivity( showInstallOption((filesDir.absolutePath + "/" + "app-release.apk"), applicationContext))
                     Navigation()
                 }
             }

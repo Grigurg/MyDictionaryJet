@@ -3,7 +3,8 @@ package com.grig.mydictionaryjet.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.domain.model.WordsNote
-import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNotes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,23 +13,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val useCases: WordsNotesUseCases
+    private val wordsNotesUseCases: WordsNotesUseCases,
+    private val remoteWordsNotesUseCase: GetRemoteWordsNotes
 ) : ViewModel() {
 
     private val _wordsNotes = MutableStateFlow(listOf<WordsNote>())
     val wordsNotes = _wordsNotes.asStateFlow()
 
+    private val _remoteWordsNotes = MutableStateFlow(listOf<WordsNote>())
+    val remoteWordsNotes = _remoteWordsNotes.asStateFlow()
+
     init {
         viewModelScope.launch {
-            useCases.getWordsNotes().collect { wordsNotes ->
+            wordsNotesUseCases.getWordsNotes().collect { wordsNotes ->
                 _wordsNotes.emit(wordsNotes)
-//                Log.d("MyLog", "tittle ${wordsNotes[1].title}")
+            }
+        }
+        viewModelScope.launch {
+            remoteWordsNotesUseCase().collect { wordsNotes ->
+                _remoteWordsNotes.emit(wordsNotes)
             }
         }
     }
+
     fun deleteWordsNote(wordsNote: WordsNote) {
         viewModelScope.launch {
-            useCases.deleteWordsNote(wordsNote)
+            wordsNotesUseCases.deleteWordsNote(wordsNote)
         }
     }
 

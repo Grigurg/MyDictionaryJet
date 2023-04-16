@@ -1,8 +1,6 @@
 package com.grig.mydictionaryjet.presentation.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -24,26 +22,42 @@ import com.grig.mydictionaryjet.presentation.home.WordsNoteItemEvent
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val wordsNotes by viewModel.wordsNotes.collectAsState()
+    val remoteWordsNotes by viewModel.remoteWordsNotes.collectAsState()
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                                           navController.navigate(Screen.WordsNoteEditScreen.route)
+                navController.navigate(Screen.WordsNoteEditScreen.route)
             }, backgroundColor = MaterialTheme.colors.surface) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add note")
             }
         }
     ) { padding ->
         Column {
-            WordsNoteMainItem(modifier = Modifier
-                .clickable {
-                    navController.navigate(Screen.WordsMainScreen.route)
-                }
-                .padding(padding)
-            )
-            WordsNotesList(wordsNotes = wordsNotes,
+//            WordsNoteMainItem(modifier = Modifier
+//                .clickable {
+//                    navController.navigate(Screen.WordsMainScreen.route)
+//                }
+//                .padding(padding)
+//            )
+            WordsNotesList(wordsNotes = remoteWordsNotes,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .padding(top = 10.dp)
+                    .padding(horizontal = 5.dp),
+                onItemEvent = { event ->
+                    when (event) {
+                        is WordsNoteItemEvent.ClickWordsNote ->
+                            navController.navigate(Screen.RemoteWordsNoteScreen.route + "/${event.title}")
+                        is WordsNoteItemEvent.EditWordsNote ->
+                            navController.navigate(Screen.WordsNoteEditScreen.route + "?title=${event.title}")
+                        is WordsNoteItemEvent.DeleteWordsNote ->
+                            viewModel.deleteWordsNote(event.wordsNote)
+                    }
+                })
+//            Text(text = "wow yeah")
+            WordsNotesList(
+                wordsNotes = wordsNotes,
+                modifier = Modifier
                     .padding(top = 10.dp)
                     .padding(horizontal = 5.dp),
                 onItemEvent = { event ->

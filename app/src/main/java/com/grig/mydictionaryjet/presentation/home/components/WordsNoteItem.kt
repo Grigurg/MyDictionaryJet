@@ -51,11 +51,7 @@ fun WordsNoteItem(
                 textAlign = TextAlign.Center
             )
             Text(
-                text = buildString {
-                    for (word in wordsNote.content) {
-                        append(word.toString() + "\n")
-                    }
-                },
+                text = wordsNote.content,
                 style = MaterialTheme.typography.body2.copy(
                     color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f)
                 ),
