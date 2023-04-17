@@ -33,8 +33,15 @@ class VersionControl @Inject constructor(
     fun isVersionLatest(): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
         getVersion().thenAccept { version ->
+            Log.d("MyLog", "Version is $version buikd is ${BuildConfig.VERSION_CODE}")
+            if (BuildConfig.VERSION_CODE > version) {
+                Log.d("MyLog", "throw ")
+                throw NotLatestVersionInDatabase(" jkljlk j")
+            }
             future.complete((BuildConfig.VERSION_CODE == version))
         }
         return future
     }
 }
+
+class NotLatestVersionInDatabase(msg: String): Exception(msg)

@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         delay(2000)
 //                        val currentVersion =
                         versionControl.isVersionLatest().thenAccept { isLatest ->
-                            isDialogOpen = isLatest
+                            isDialogOpen = !isLatest
                         }
                     }
                     if (isDialogOpen) {
