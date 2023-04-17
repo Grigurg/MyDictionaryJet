@@ -10,5 +10,5 @@ import com.grig.mydictionaryjet.presentation.words_show.words_note.WordsNoteView
 @Composable
 fun WordsNote(viewModel: WordsNoteViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
-    WordsList(state = state.wordsListState, mediaHelper = viewModel.mediaHelper)
+    WordsList(words = state.words, mediaHelper = viewModel.mediaHelper)
 }

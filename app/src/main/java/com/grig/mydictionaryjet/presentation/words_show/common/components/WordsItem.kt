@@ -13,8 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,8 +36,7 @@ fun WordItem(
     expanded: Boolean,
     speaking: Boolean,
     word: Word,
-    ind: Int,
-    onEvent: (WordsItemEvent) -> Unit
+    onEvent: (WordsItemEvent) -> Unit,
 ) {
 //    val expanded = wordItemState.isExpanded
 //    val speaking = wordItemState.speaking
@@ -48,12 +46,13 @@ fun WordItem(
         targetValue = if (!expanded) 180f else 0f, animationSpec = tween(durationMillis = 500)
     )
 
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
 //            .height(si.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable { onEvent(WordsItemEvent.ClickItem(ind)) }
+            .clickable { onEvent(WordsItemEvent.ClickItem) }
             .background(color = MaterialTheme.colors.surface),
     ) {
         Column {
@@ -68,7 +67,7 @@ fun WordItem(
                         .width(30.dp)
                         .pointerInput(Unit) {
                             detectTapGestures {
-                                onEvent(WordsItemEvent.ClickTalker(ind))
+                                onEvent(WordsItemEvent.ClickTalker)
                             }
                         },
 //                    .background(Color.Red),

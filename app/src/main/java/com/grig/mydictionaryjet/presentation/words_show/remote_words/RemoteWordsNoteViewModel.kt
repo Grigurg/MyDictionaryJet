@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
+import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNote
-import com.grig.mydictionaryjet.presentation.words_show.common.WordsListState
 import com.grig.mydictionaryjet.presentation.words_show.words_note.WordsNoteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,13 +35,9 @@ class RemoteWordsNoteViewModel @Inject constructor(
             getWordsNoteUseCase(title).collect { wordsNote ->
                 _state.emit(
                     WordsNoteState(
-                        title = wordsNote.title,
-                        wordsListState = WordsListState(
-                            words = com.grig.mydictionaryjet.domain.model.WordsNote.wordsFromString(
-                                wordsNote.content
-                            )
+                        title = wordsNote.title, words = WordsNote.wordsFromString(
+                            wordsNote.content
                         )
-//                useCases.getWordsNote(title)
                     )
                 )
             }

@@ -220,7 +220,7 @@ class MediaHelper @Inject constructor(
         path = "${context.filesDir.absolutePath}/$engWord"
     }
 
-    suspend fun sayWord(onCompletion: () -> Unit = {}, engWord: String) {
+    suspend fun sayWord(engWord: String, onCompletion: () -> Unit = {}) {
         init(engWord)
         if (!getReady()) {
             onCompletion()
