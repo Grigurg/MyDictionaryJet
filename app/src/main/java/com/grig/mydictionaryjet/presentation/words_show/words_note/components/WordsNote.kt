@@ -1,6 +1,5 @@
 package com.grig.mydictionaryjet.presentation.words_show.words_note.components
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue

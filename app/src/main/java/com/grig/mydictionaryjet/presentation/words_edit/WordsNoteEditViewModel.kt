@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.domain.model.WordsNote
-import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
 import com.grig.mydictionaryjet.presentation.words_edit.components.WordsNoteEditEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

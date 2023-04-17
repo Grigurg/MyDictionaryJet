@@ -126,14 +126,10 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.media.PlaybackParams
 import android.net.Uri
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.annotation.RequiresApi
 import okhttp3.ResponseBody
 import java.io.*
-import java.nio.channels.Channels
 import javax.inject.Inject
 
 class MediaHelper @Inject constructor(
@@ -168,7 +164,7 @@ class MediaHelper @Inject constructor(
             var outputStream: OutputStream? = null
             try {
                 val fileReader = ByteArray(4096)
-                val fileSize = body.contentLength()
+//                val fileSize = body.contentLength()
                 var fileSizeDownloaded: Long = 0
                 inputStream = body.byteStream()
                 outputStream = FileOutputStream(audioFile)
@@ -199,17 +195,18 @@ class MediaHelper @Inject constructor(
 //            RetrofitClient.getInstance().create(TalkerApi::class.java).getAudio(engWord).body()
 //        Log.d("MyLog", RetrofitClient2.getInstance().create(TalkerApi2::class.java).getAudio(engWord).body()?.string().toString())
         val body =
-            RetrofitClient.getInstance().create(TalkerApi::class.java).getAudio(engWord).body() ?: TalkerApiClient().getInputStream(engWord)
+            RetrofitClient.getInstance().create(TalkerApi::class.java).getAudio(engWord).body()
+                ?: TalkerApiClient().getInputStream(engWord)
         return body!!
 //        return RetrofitClient.getInstance().create(TalkerApi::class.java).getAudio(engWord).body()
     }
 
     private suspend fun getReady(): Boolean {
-        if (!isAudioExist()) {
-            return writeResponseBodyToDisk(getAudioFromApi())
+        return if (!isAudioExist()) {
+            writeResponseBodyToDisk(getAudioFromApi())
         } else {
-//            Log.d("MyLog", "File exists")
-            return true
+    //            Log.d("MyLog", "File exists")
+            true
         }
 //        return if (!isAudioExist()) {
 //            saveFile(getAudioFromApi())
@@ -223,7 +220,6 @@ class MediaHelper @Inject constructor(
         path = "${context.filesDir.absolutePath}/$engWord"
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     suspend fun sayWord(onCompletion: () -> Unit = {}, engWord: String) {
         init(engWord)
         if (!getReady()) {

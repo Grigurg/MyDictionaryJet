@@ -3,7 +3,7 @@ package com.grig.mydictionaryjet.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.domain.model.WordsNote
-import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
 import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNotes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +20,8 @@ class HomeViewModel @Inject constructor(
     private val _wordsNotes = MutableStateFlow(listOf<WordsNote>())
     val wordsNotes = _wordsNotes.asStateFlow()
 
-    private val _remoteWordsNotes = MutableStateFlow(listOf<WordsNote>())
-    val remoteWordsNotes = _remoteWordsNotes.asStateFlow()
+    private val _remoteTitles = MutableStateFlow(listOf<String>())
+    val remoteTitles = _remoteTitles.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            remoteWordsNotesUseCase().collect { wordsNotes ->
-                _remoteWordsNotes.emit(wordsNotes)
+            remoteWordsNotesUseCase().collect { titles ->
+                _remoteTitles.emit(titles)
             }
         }
     }

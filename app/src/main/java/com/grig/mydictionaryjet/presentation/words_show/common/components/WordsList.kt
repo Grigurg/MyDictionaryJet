@@ -1,7 +1,5 @@
 package com.grig.mydictionaryjet.presentation.words_show.common.components
 
-import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,14 +61,12 @@ fun WordsList(
                                                 )
                                             } else {
                                                 list.add(event.id)
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    scope.launch {
-                                                        mediaHelper?.sayWord(onCompletion = {
-                                                            speakingWordIds =
-                                                                speakingWordIds.toMutableList()
-                                                                    .also { it.remove(event.id) }
-                                                        }, word.engWord)
-                                                    }
+                                                scope.launch {
+                                                    mediaHelper?.sayWord(onCompletion = {
+                                                        speakingWordIds =
+                                                            speakingWordIds.toMutableList()
+                                                                .also { it.remove(event.id) }
+                                                    }, word.engWord)
                                                 }
                                             }
                                         }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
 import com.grig.mydictionaryjet.domain.model.WordsNote
-import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
+import com.grig.mydictionaryjet.domain.use_case.database.WordsNotesUseCases
 import com.grig.mydictionaryjet.presentation.words_show.common.WordsListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

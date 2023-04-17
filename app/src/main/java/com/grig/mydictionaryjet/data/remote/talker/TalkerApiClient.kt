@@ -1,18 +1,13 @@
 package com.grig.mydictionaryjet.data.remote.talker
+
 import android.os.StrictMode
-import android.util.Log
-import com.google.gson.JsonObject
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
 import org.json.JSONObject
-import java.io.FileOutputStream
-import java.io.InputStream
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.channels.Channels
 import java.util.*
 import java.util.zip.GZIPInputStream
 
@@ -77,28 +72,29 @@ class TalkerApiClient {
 
     fun getInputStream(word: String): ResponseBody? {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
-        val url = getUrlMp3(word)
+
 //        Log.d("MyLog", url)
         val request = Request.Builder().url(getUrlMp3(word)).build()
         val response = OkHttpClient().newCall(request).execute()
 
         return response.body
     }
-    private fun writeToFile(inputStream: InputStream, path: String) {
-        val rbc = Channels.newChannel(inputStream)
-        val fos = FileOutputStream(path)
 
-        // Перенаправляем данные из ReadableByteChannel прямо канал файла.
-        // Говорят, так быстрее, чем по одному байту вычитывать из потока и писать в файл.
-        var filePosition: Long = 0
-        var transferredBytes = fos.channel.transferFrom(rbc, filePosition, Long.MAX_VALUE)
-        while (transferredBytes == Long.MAX_VALUE) {
-            filePosition += transferredBytes
-            transferredBytes = fos.channel.transferFrom(rbc, filePosition, Long.MAX_VALUE)
-        }
-        rbc.close()
-        fos.close()
-    }
+//    private fun writeToFile(inputStream: InputStream, path: String) {
+//        val rbc = Channels.newChannel(inputStream)
+//        val fos = FileOutputStream(path)
+//
+//        // Перенаправляем данные из ReadableByteChannel прямо канал файла.
+//        // Говорят, так быстрее, чем по одному байту вычитывать из потока и писать в файл.
+//        var filePosition: Long = 0
+//        var transferredBytes = fos.channel.transferFrom(rbc, filePosition, Long.MAX_VALUE)
+//        while (transferredBytes == Long.MAX_VALUE) {
+//            filePosition += transferredBytes
+//            transferredBytes = fos.channel.transferFrom(rbc, filePosition, Long.MAX_VALUE)
+//        }
+//        rbc.close()
+//        fos.close()
+//    }
 //    fun getAudio(engWord: String, path: String): Boolean {
 //        return try {
 //            writeToFile(getInputStream(engWord), path)

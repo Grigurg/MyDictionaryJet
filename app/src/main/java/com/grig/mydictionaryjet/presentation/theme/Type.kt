@@ -13,6 +13,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     )
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
@@ -26,3 +27,6 @@ val Typography = Typography(
     )
     */
 )
+
+val NoteTitleType = Typography.h6.copy(fontSize = 18.sp)
+//val WordsNotesGroupTitleType = Typography.h6.copy(fontSize = 19.5.sp)

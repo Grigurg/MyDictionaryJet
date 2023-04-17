@@ -1,6 +1,8 @@
 package com.grig.mydictionaryjet.presentation.home.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -22,7 +24,8 @@ import com.grig.mydictionaryjet.presentation.home.WordsNoteItemEvent
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val wordsNotes by viewModel.wordsNotes.collectAsState()
-    val remoteWordsNotes by viewModel.remoteWordsNotes.collectAsState()
+//    val remoteWordsNotes by viewModel.remoteWordsNotes.collectAsState()
+    val remoteTitles by viewModel.remoteTitles.collectAsState()
 
     Scaffold(
         floatingActionButton = {
@@ -33,33 +36,34 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             }
         }
     ) { padding ->
-        Column {
+        Column(Modifier.padding(padding)) {
 //            WordsNoteMainItem(modifier = Modifier
 //                .clickable {
 //                    navController.navigate(Screen.WordsMainScreen.route)
 //                }
 //                .padding(padding)
 //            )
-            WordsNotesList(wordsNotes = remoteWordsNotes,
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .padding(horizontal = 5.dp),
-                onItemEvent = { event ->
-                    when (event) {
-                        is WordsNoteItemEvent.ClickWordsNote ->
-                            navController.navigate(Screen.RemoteWordsNoteScreen.route + "/${event.title}")
-                        is WordsNoteItemEvent.EditWordsNote ->
-                            navController.navigate(Screen.WordsNoteEditScreen.route + "?title=${event.title}")
-                        is WordsNoteItemEvent.DeleteWordsNote ->
-                            viewModel.deleteWordsNote(event.wordsNote)
-                    }
+            Spacer(modifier = Modifier.height(2.dp))
+
+//            WordsNotesGroupTitle(title = "Words from Firebase")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            RemoteWordsNotesList(titles = remoteTitles,
+                modifier = Modifier.padding(horizontal = 5.dp),
+                onClick = { title ->
+                    navController.navigate(Screen.RemoteWordsNoteScreen.route + "/${title}")
                 })
-//            Text(text = "wow yeah")
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+//            WordsNotesGroupTitle(title = "Words from local Db")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             WordsNotesList(
                 wordsNotes = wordsNotes,
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .padding(horizontal = 5.dp),
+                modifier = Modifier.padding(horizontal = 5.dp),
                 onItemEvent = { event ->
                     when (event) {
                         is WordsNoteItemEvent.ClickWordsNote ->
@@ -83,3 +87,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
 //        )
 //    }
 }
+
+//@Composable
+//fun WordsNotesGroupTitle(title: String) {
+//    Text(
+//        text = title,
+//        style = WordsNotesGroupTitleType,
+//        modifier = Modifier.padding(start = 10.dp),
+////                textAlign = TextAlign.Center
+//    )
+//}

@@ -1,4 +1,4 @@
-package com.grig.mydictionaryjet.data.repository.words
+package com.grig.mydictionaryjet.data.repository.remote
 
 //class WordsRepositoryFakeImpl : WordsRepository {
 //    override suspend fun getWords(): Flow<List<WordDto>> = flow {

@@ -1,10 +1,5 @@
 package com.grig.mydictionaryjet.domain.model
 
-import android.util.Log
-import androidx.compose.runtime.isTraceInProgress
-import androidx.room.Entity
-import com.grig.mydictionaryjet.data.database.WordsTypeConverters
-
 //@Entity(tableName = "words_table")
 //data class Word(
 ////    @PrimaryKey
@@ -43,7 +38,8 @@ data class Word(
         sb.append(engWord).append(" - ").append(rusWord)
         return "$engWord - $rusWord" + (example?.let { " + $it" } ?: "")
     }
-        companion object {
+
+    companion object {
         fun fromString(input: String): Word? {
             return try {
                 val parts = input.split(" - ", " + ")

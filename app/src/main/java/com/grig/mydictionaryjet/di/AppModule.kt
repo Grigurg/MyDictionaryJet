@@ -3,16 +3,14 @@ package com.grig.mydictionaryjet.di
 import android.app.Application
 import com.google.firebase.database.FirebaseDatabase
 import com.grig.mydictionaryjet.data.database.WordsNoteDatabase
-import com.grig.mydictionaryjet.data.database.WordsTypeConverters
 import com.grig.mydictionaryjet.data.remote.talker.MediaHelper
 import com.grig.mydictionaryjet.data.repository.VersionControl
 import com.grig.mydictionaryjet.data.repository.notes.WordsNotesRepositoryImpl
-import com.grig.mydictionaryjet.data.repository.words.WordsNoteRemoteRepositoryImpl
-import com.grig.mydictionaryjet.data.repository.words.WordsNotesRemoteRepositoryImpl
+import com.grig.mydictionaryjet.data.repository.remote.WordsNoteRemoteRepositoryImpl
+import com.grig.mydictionaryjet.data.repository.remote.WordsNotesRemoteRepositoryImpl
 import com.grig.mydictionaryjet.domain.repository.WordsNoteRemoteRepository
 import com.grig.mydictionaryjet.domain.repository.WordsNotesRemoteRepository
 import com.grig.mydictionaryjet.domain.repository.WordsNotesRepository
-import com.grig.mydictionaryjet.domain.use_case.WordsNotesUseCases
 import com.grig.mydictionaryjet.domain.use_case.database.*
 import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNote
 import com.grig.mydictionaryjet.domain.use_case.remote.GetRemoteWordsNotes
@@ -25,12 +23,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideWordsTypeConverters(): WordsTypeConverters {
-        return WordsTypeConverters()
-    }
 
     @Provides
     @Singleton

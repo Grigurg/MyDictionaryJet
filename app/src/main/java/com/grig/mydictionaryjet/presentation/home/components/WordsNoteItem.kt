@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.presentation.home.WordsNoteItemEvent
+import com.grig.mydictionaryjet.presentation.theme.NoteTitleType
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,7 +47,7 @@ fun WordsNoteItem(
         ) {
             Text(
                 text = wordsNote.title,
-                style = MaterialTheme.typography.h6,
+                style = NoteTitleType,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
@@ -55,7 +56,7 @@ fun WordsNoteItem(
                 style = MaterialTheme.typography.body2.copy(
                     color = MaterialTheme.colors.onSurface.copy(alpha = 0.75f)
                 ),
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(horizontal = 10.dp),
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis
             )

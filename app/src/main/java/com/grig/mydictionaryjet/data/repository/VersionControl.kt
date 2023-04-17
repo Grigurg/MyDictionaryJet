@@ -30,7 +30,7 @@ class VersionControl @Inject constructor(
         return future
     }
 
-     fun isVersionLatest(): CompletableFuture<Boolean> {
+    fun isVersionLatest(): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
         getVersion().thenAccept { version ->
             future.complete((BuildConfig.VERSION_CODE == version))

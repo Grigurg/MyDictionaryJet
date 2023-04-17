@@ -1,6 +1,5 @@
 package com.grig.mydictionaryjet.domain.use_case.remote
 
-import com.grig.mydictionaryjet.domain.model.WordsNote
 import com.grig.mydictionaryjet.domain.repository.WordsNotesRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,16 +35,9 @@ import javax.inject.Inject
 class GetRemoteWordsNotes @Inject constructor(
     private val repository: WordsNotesRemoteRepository
 ) {
-    operator fun invoke(): Flow<List<WordsNote>> = flow {
-//        emit(Resource.Success(listOf(Word("eee", "ffffffff"))))
-        repository.getWordsNotes().collect { res ->
-//                for (i in res) {
-//                    Log.d("MyLog",  i.toWordsNote().content
-//                        ?: "null")
-//                }
-//                Log.d("MyLog", res.map { it.toWordsNote() })
-            val words = res.map { it.toWordsNote() }
-            emit(words)
+    operator fun invoke(): Flow<List<String>> = flow {
+        repository.getWordsNotesTitles().collect { titles ->
+            emit(titles)
 
         }
     }

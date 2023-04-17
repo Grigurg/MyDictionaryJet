@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -40,7 +41,6 @@ class MainActivity : ComponentActivity() {
                     if (isDialogOpen) {
                         DeprecatedVersionDialog()
                     }
-//                    startActivity( showInstallOption((filesDir.absolutePath + "/" + "app-release.apk"), applicationContext))
                     Navigation()
                 }
             }
